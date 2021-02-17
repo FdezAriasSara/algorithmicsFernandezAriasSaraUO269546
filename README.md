@@ -1,10 +1,10 @@
-# algorithmicsGarciaDiazVicenteUO42478
+# algorithmicsFdezAriasSaraUO269546
 Repository for the Algorithmics course at the School of Computer Engineering of the University of Oviedo
 
 ## Information
-**Student**: Vicente García Díaz
+**Student**: Sara Fern�ndez Arias
 
 **Year**: 2021
 
-**Repository URL**: https://github.com/vicegd/algorithmicsGarciaDiazVicenteUO42478
+**Repository URL**: https://github.com/vicegd/algorithmicsFdezAriasSaraUO269546
 
