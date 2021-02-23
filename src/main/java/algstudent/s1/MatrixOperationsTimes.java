@@ -17,10 +17,10 @@ public class MatrixOperationsTimes {
 		
 
 
-//			t1 = System.currentTimeMillis();
-//			int diagSum2=matrix.sumDiagonal2();		
-//			t2 = System.currentTimeMillis();
-//			System.out.printf(" DIAGONAL 2: SIZE OF MATRIX-%d TIME-%d milliseconds. SUM-%d\n", i, t2 - t1, diagSum2);
+			t1 = System.currentTimeMillis();
+			int diagSum2=matrix.sumDiagonal2();		
+			t2 = System.currentTimeMillis();
+		System.out.printf(" DIAGONAL 2: SIZE OF MATRIX-%d TIME-%d milliseconds. SUM-%d\n", i, t2 - t1, diagSum2);
 			System.out.println("################################################################################################");
 		}
 
