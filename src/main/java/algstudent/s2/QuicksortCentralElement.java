@@ -5,7 +5,7 @@
  * the best algorithm of this lab. It is the QUICKSORT */
 public class QuicksortCentralElement extends Vector {
 	
-	public static final int SORTED_ALREADY = 3;
+	public static final int SORTED_ALREADY = 1;
 
 	public QuicksortCentralElement(int nElements) {
 		super(nElements);
@@ -15,23 +15,24 @@ public class QuicksortCentralElement extends Vector {
 		int i=left;
 		int j=right-1;
 		int pivot;
-		if(left<right) {//if there's only one element the vector is sorted already
-			int center= left+right/2;//the middle position of the vector 
-			//If the number of elements is smaller than or equal to three , there's no need to sort.(they are sorted already.) 
-			if((right - left) >= SORTED_ALREADY) {
+		
+
+		if(left<right) {
+			int center= (left+right)/2;//the middle position of the vector 
+			//NOTE THAT:if there's only one element the vector is sorted already
+			if((right - left) >= SORTED_ALREADY) {//then , there must be a positive diference between left and righ of at leas one unit.
 				pivot=elements[center]; // the pivot will be the center element computed earlier.
-				AuxMethods.swapElements(elements, center, right);
+				elements=AuxMethods.swapElements(elements,  center,right);
 				do {
 					
-					while(elements[i]<=pivot && i<right)i++;
-					while(elements[j] >= pivot && j> left)j--;
+					while(elements[i]<=pivot && i<right)i++;//first element smaller than the pivot
+					while(elements[j] >= pivot && j> left)j--; //first element greater than it.
 					//we'll evaluate the elements to the left and to the right of the pivot.
 					//the pivot it's like a median:the elements to its left must be smaller than it . 
 					//the elements to the right must be greater than it.
-					if(i<j) {//
-						AuxMethods.swapElements(elements, i, j);
-					}}while(i<j);//when the two loops cross, it's time to stop.
-				AuxMethods.swapElements(elements, i,right); //we set the position of the pivot
+					if(i<j) {elements=AuxMethods.swapElements(elements, i, j);}
+					}while(i<j);//when the two loops cross, it's time to stop.
+				elements=AuxMethods.swapElements(elements, i,right); //we set the position of the pivot
 				quickSort(left, i-1);
 				quickSort(i+1, right);
 			}
