@@ -2,8 +2,8 @@ package algstudent.s2;
 
 public class SortingMeasurements {
 	private static int differentSizes =30; //how many sizes do you want to use in the measurements 
-	private static int nTimes =50; //number of repetitions of the executions
-	private static String option = "inversely"; //working with sorted/inversely sorted/random vectors
+	private static int nTimes =100; //number of repetitions of the executions
+	private static String option = "random"; //working with sorted/inversely sorted/random vectors
 
 	/** This program could be used to test all the sorting algorithms
 	 * */
