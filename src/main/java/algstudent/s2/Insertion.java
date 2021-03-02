@@ -11,7 +11,17 @@ public class Insertion extends Vector {
 
 	@Override
 	public void sort(){
-		// TODO: Implement this algorithm
+		int j;
+		int pivot;
+		for (int i = 0; i < elements.length; i++) {
+			pivot=elements[i];
+			j=i-1;
+			while (j>=0 && pivot<elements[j]) {
+				elements[j+1]=elements[j];
+				j--;
+			}
+			elements[j+1]=pivot;
+		}
 	} 
 	
 	@Override

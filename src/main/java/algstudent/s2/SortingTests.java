@@ -8,11 +8,11 @@ public class SortingTests {
 	public static void main(String arg []) {
 		int n = Integer.parseInt(arg[0]);  //problem size
 		
-//		testSortingAlgorithm(new Insertion(n));
+		testSortingAlgorithm(new Insertion(n));
 		
-//		testSortingAlgorithm(new Selection(n));
+//	testSortingAlgorithm(new Selection(n));
 		
-		testSortingAlgorithm(new Bubble(n));
+//		testSortingAlgorithm(new Bubble(n));
 		
 //		testSortingAlgorithm(new QuicksortFateful(n));
 //		
