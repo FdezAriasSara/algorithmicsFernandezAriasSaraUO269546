@@ -11,7 +11,7 @@ public class QuicksortMedianOfThree extends Vector {
 	 the element which position is in the center between them, and
 	 move the elements to order them */
 	private int median_of_three(int left, int right) { 
-		int center = (left + right) / 2;
+		int center = (left + right) / 2;//It's literally the median position.
 		if (elements[left] > elements[center])
 			interchange(left, center);
 		if (elements[left] > elements[right])

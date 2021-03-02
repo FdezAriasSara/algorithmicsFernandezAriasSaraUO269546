@@ -1,5 +1,7 @@
 ﻿package algstudent.s2;
 
+import java.util.*;
+
 /* This program can be used to sort n elements with 
  * a "bad" algorithm (quadratic). 
  * It is the BUBBLE or DIRECT EXCHANGE */
@@ -10,9 +12,25 @@ public class Bubble extends Vector {
 
 	@Override
 	public void sort() {
-		// TODO: Implement this algorithm
+		for (int i = 1; i < elements.length; i++) {//two loops are used because
+			//without  a centinel, the vector must be explored whole for each element.
+			
+			for (int j =  elements.length-1; j>=i ; j--) {
+				if(elements[j-1]>elements[j]) {
+					elements=swapElements(elements,j-1, j);
+				}
+			}
+			
+		}
 	}  
 	
+	private int[] swapElements(int[] elements, int i, int j) {
+		int aux=elements[j];
+		elements[j]=elements[i];
+		elements[i]=aux;
+		return elements;
+	}
+
 	@Override
 	public String getName() {
 		return "Bubble";

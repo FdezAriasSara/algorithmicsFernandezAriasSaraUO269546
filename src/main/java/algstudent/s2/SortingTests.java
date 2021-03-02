@@ -1,12 +1,5 @@
 package algstudent.s2;
 
-import labs.en._20.lab2sorting.Bubble;
-import labs.en._20.lab2sorting.Insertion;
-import labs.en._20.lab2sorting.QuicksortCentralElement;
-import labs.en._20.lab2sorting.QuicksortFateful;
-import labs.en._20.lab2sorting.QuicksortMedianOfThree;
-import labs.en._20.lab2sorting.Selection;
-import labs.en._20.lab2sorting.Vector;
 
 public class SortingTests {
 
@@ -15,17 +8,17 @@ public class SortingTests {
 	public static void main(String arg []) {
 		int n = Integer.parseInt(arg[0]);  //problem size
 		
-		testSortingAlgorithm(new Insertion(n));
+//		testSortingAlgorithm(new Insertion(n));
 		
-		testSortingAlgorithm(new Selection(n));
+//		testSortingAlgorithm(new Selection(n));
 		
 		testSortingAlgorithm(new Bubble(n));
 		
-		testSortingAlgorithm(new QuicksortFateful(n));
-		
-		testSortingAlgorithm(new QuicksortCentralElement(n));
-		
-		testSortingAlgorithm(new QuicksortMedianOfThree(n));
+//		testSortingAlgorithm(new QuicksortFateful(n));
+//		
+//		testSortingAlgorithm(new QuicksortCentralElement(n));
+//		
+//		testSortingAlgorithm(new QuicksortMedianOfThree(n));
 	}
 	
 	public static void testSortingAlgorithm(Vector v) {
