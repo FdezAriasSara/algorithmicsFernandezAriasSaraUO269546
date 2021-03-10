@@ -3,6 +3,8 @@ package algstudent.s32;
 import java.util.List;
 
 public class InversionsQuadratic {
+private List<Integer> ranking;
+
 //like brute forze.
 	
 	/**
@@ -10,22 +12,24 @@ public class InversionsQuadratic {
 	 * @param ranking
 	 */
 	public InversionsQuadratic(List<Integer> ranking) {
-		
-		for (int i = 0; i < ranking.size(); i++) {
-			for (int j =  ranking.size()-1; j>0; j++) {
-			 if(ranking.get(j)<ranking.get(i)) {
-				 
-				 
-			 }
-				}
-			}
+		this.ranking=ranking;
 		
 
 	}
 
 	public String start() {
-		// TODO Auto-generated method stub
-		return null;
+		int element;
+		long inversions=0;//IMPORTANT to use long else overflow might happen.
+		for (int i = 0; i < ranking.size(); i++) {
+			element=ranking.get(i);
+			for (int j = i+1; j<ranking.size(); j++) {
+			 if(element>ranking.get(j)) {
+				 
+				 inversions++;
+			 }
+				}
+			}
+		return String.valueOf(inversions);
 	}
 
 }
