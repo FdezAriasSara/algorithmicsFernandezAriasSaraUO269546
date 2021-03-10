@@ -4,8 +4,23 @@ import java.util.List;
 
 public class InversionsQuadratic {
 //like brute forze.
+	
+	/**
+	 * Evaluating all the possibilities by using nested loops. 
+	 * @param ranking
+	 */
 	public InversionsQuadratic(List<Integer> ranking) {
-		// TODO Auto-generated constructor stub
+		
+		for (int i = 0; i < ranking.size(); i++) {
+			for (int j =  ranking.size()-1; j>0; j++) {
+			 if(ranking.get(j)<ranking.get(i)) {
+				 
+				 
+			 }
+				}
+			}
+		
+
 	}
 
 	public String start() {
