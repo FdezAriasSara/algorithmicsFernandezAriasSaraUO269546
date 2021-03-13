@@ -16,7 +16,7 @@ public class InversionsTimes {
 		
 		for (int i = 1; i <= numberFiles; i++) {
 			//Check if the path is correct for you
-			String fileName = Paths.get("").toAbsolutePath().toString() + "/src/main/java/algstudent.s32/ranking" + i + ".txt";
+			String fileName = Paths.get("").toAbsolutePath().toString() + "/src/main/java/algstudent/s32/ranking" + i + ".txt";
 			System.out.println("FILE: " + fileName);
 			
 			ranking = readRankingFromFile(fileName);

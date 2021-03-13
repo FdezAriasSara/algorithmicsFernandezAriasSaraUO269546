@@ -29,26 +29,32 @@ public class Inversions {
 	}
 
 	private long combineAll(int x1, int x2, int y1, int y2, List<Integer> ranking) {
+		//counter of inversions
 		long counter=0;
+		//computing the size of the auxiliar arrays,x and y .
 		int sizeX=x2-x1+1;
 		int sizeY=y2-y1+1;
+		//auxiliar array initialization
 		int x[]= new int[sizeX];
 		int y[]= new int[sizeY];
+		
+		//filling the auxiliar arrays with the elements to be evaluated.
 		for (int i = 0; i < sizeX; i++) {
 			x[i]=ranking.get(x1+i);
 		}
 		for (int j = 0; j < sizeY; j++) {
 			x[j]=ranking.get(y1+j);
 		}
-		for (int i = 0; i <ranking.size(); i++) {
-			if(x[i]<y[i]) {
-				ranking.add(i,x[i]);
-				
-				//if the left number is smaller , theres no inversion.
-			}else if(y[i]<x[i]) {
-				ranking.add(i,y[i]);
-				counter++;//if a number at the right is smaller than a number at the left-> inversion
-			}
+		
+		//CONDITION?
+//			if(x[xi]<y[yi]) {
+//				ranking.add(i,x[i]);
+//				xi++;
+//				//if the left number is smaller , theres no inversion.
+//			}else if(y[i]<x[i]) {
+//				ranking.add(i,y[i]);
+//				counter++;//if a number at the right is smaller than a number at the left-> inversion
+//			}
 		
 		}
 		
