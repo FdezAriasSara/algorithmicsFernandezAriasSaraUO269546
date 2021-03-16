@@ -68,7 +68,7 @@ public class Inversions {
 				// we don't increment the index for array y since the element has not been
 				// stored yet.
 			} else {
-				inversions += (middle - xi);
+				inversions =inversions+(mid1-xi);
 				yi++;// we take the next value of array y, since the current one was already stored
 						// in sorted.
 
