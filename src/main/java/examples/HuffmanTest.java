@@ -7,7 +7,7 @@ import org.junit.Test;
 public class HuffmanTest {
 	@Test
 	public void testCase1() {
-		String file = "src/main/java/labs/examples/greedy/huffman/case1.txt";
+		String file = "src/main/java/examples/case1.txt";
     	Huffman huffman = new Huffman(file);
     	huffman.run();
     	Map<String, String> codes = huffman.getCodes();
@@ -22,7 +22,7 @@ public class HuffmanTest {
 	
 	@Test
 	public void testCase2() {
-		String file = "src/main/java/labs/examples/greedy/huffman/case2.txt";
+		String file = "src/main/java/examples/case2.txt";
     	Huffman huffman = new Huffman(file);
     	huffman.run();
     	Map<String, String> codes = huffman.getCodes();
@@ -37,7 +37,7 @@ public class HuffmanTest {
 	
 	@Test
 	public void testCase3() {
-		String file = "src/main/java/labs/examples/greedy/huffman/case3.txt";
+		String file = "src/main/java/examples/case3.txt";
     	Huffman huffman = new Huffman(file);
     	huffman.run();
     	Map<String, String> codes = huffman.getCodes();
@@ -51,7 +51,7 @@ public class HuffmanTest {
 	
 	@Test
 	public void testCase4() {
-		String file = "src/main/java/labs/examples/greedy/huffman/case4.txt";
+		String file = "src/main/java/examples/case4.txt";
     	Huffman huffman = new Huffman(file);
     	huffman.run();
     	Map<String, String> codes = huffman.getCodes();
