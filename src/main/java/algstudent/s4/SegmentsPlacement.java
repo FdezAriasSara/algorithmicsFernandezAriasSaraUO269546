@@ -44,6 +44,11 @@ public class SegmentsPlacement {
 		int[] sorted=sortDescendantOrder();
 		return computeCost(sorted);
 	}
+/**
+ * Copies elements from an list of integers into an array in the same exact order they appear.
+ * @param list
+ * @return the elements in array.
+ */
 	private int[] copyToArray(List<Integer> list) {
 		int[] toReturn=new int[list.size()];
 		for (int i = 0; i < toReturn.length; i++) {
@@ -51,7 +56,11 @@ public class SegmentsPlacement {
 		}
 		return toReturn;
 	}
-	
+	/**
+	 * Computes the cost in PUFOSOS of segments by the addition of their midpoints.
+	 * @param arrayOfSegments
+	 * @return the cost of a game.
+	 */
 	private long computeCost(int[] arrayOfSegments) {
 		int start=0;
 		long cost=0;
