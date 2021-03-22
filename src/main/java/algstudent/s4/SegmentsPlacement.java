@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.log4j.chainsaw.Main;
-
 public class SegmentsPlacement {
 	List<Integer> segments;
 	int numberOfSegments;
@@ -36,14 +34,14 @@ public class SegmentsPlacement {
         
         System.out.println("--------------------------------------------------------------------------------------------------");
         
-        System.out.println("The solution using the ostrich algorithim  greedy3 is :");             
+        System.out.println("The solution using the algorithim  greedy3 is :");             
         total=segPlace.greedy3();                				
         System.out.println("Total cost of greedy3 :"+total);    
         System.out.println("###############################################GAME 2#################################################");
 		//###############################################GAME 2#################################################
          fileName = Paths.get("").toAbsolutePath().toString() + "/src/main/java/algstudent/s4/game2.txt";
 		 segPlace= new SegmentsPlacement(fileName);
-		System.out.println("The solution using the ostrich algorithim  (greedy 1) is :");             
+		System.out.println("The solution using the algorithim  (greedy 1) is :");             
         total=segPlace.greedy1();                				
         System.out.println("Total cost of greedy1 :"+total);    
         
@@ -54,7 +52,7 @@ public class SegmentsPlacement {
         
         System.out.println("--------------------------------------------------------------------------------------------------");
         
-        System.out.println("The solution using the ostrich algorithim  greedy3 is :");             
+        System.out.println("The solution using the algorithim  greedy3 is :");             
         total=segPlace.greedy3();                				
         System.out.println("Total cost of greedy3 :"+total);    
 	}
@@ -80,7 +78,7 @@ public class SegmentsPlacement {
 		for (int i = 0; i < elements.length; i++) {
 			end=start+elements[i];
 			midpoint=(start+end)/2;
-			System.out.println(String.format("(%d,%d):midpoint:%d",start,end,midpoint));
+			System.out.println(String.format("(%d,%d) midpoint:%d",start,end,midpoint));
 			start=end;
 		}
 			
@@ -93,7 +91,7 @@ public class SegmentsPlacement {
 	 */
 	public long greedy2() {
 		
-		int[] sorted=sortAscendantOrder();
+		int[] sorted=sortDescendantOrder();
 		printSolution(sorted);
 		return computeCost(sorted);
 	}
@@ -102,7 +100,7 @@ public class SegmentsPlacement {
 	 * @return
 	 */
 	public long greedy3() {
-		int[] sorted=sortDescendantOrder();
+		int[] sorted=sortAscendantOrder();
 		printSolution(sorted);
 		return computeCost(sorted);
 	}
@@ -138,23 +136,38 @@ public class SegmentsPlacement {
 	private int[] sortAscendantOrder() {
 		List<Integer> sorted=new ArrayList<Integer>(segments);//Copy constructor
 		
-		for (int i = 0; i < sorted.size()-1; i++) {
-			if(sorted.get(i+1)<sorted.get(i)) {
-				Collections.swap(sorted, i+1, i);
-				
-			}
-		}
+		
+		int temp;
+		 for (int i= 0 ; i < sorted.size(); i++) { 
+	            for (int j = i + 1; j < sorted.size(); j++) { 
+	                if (sorted.get(i) > sorted.get(j)) 
+	                {
+	                    temp = sorted.get(i);
+	                    sorted.set(i, sorted.get(j));
+	                    sorted.set(j, temp) ;
+	                }
+	            }
+	        
+		}System.out.println(sorted);
 		return copyToArray(sorted);
+		
 	}
 	private int[] sortDescendantOrder() {
 	List<Integer> sorted=new ArrayList<Integer>(segments);//Copy constructor
 		
-		for (int i = 0; i < sorted.size()-1; i++) {
-			if(sorted.get(i+1)>sorted.get(i)) {
-				Collections.swap(sorted, i+1, i);
-				
-			}
-		}
+			
+		int temp;
+		 for (int i= 0 ; i < sorted.size(); i++) { 
+	            for (int j = i + 1; j < sorted.size(); j++) { 
+	                if (sorted.get(i) < sorted.get(j)) 
+	                {
+	                    temp = sorted.get(j);
+	                    sorted.set(j, sorted.get(i));
+	                    sorted.set(i, temp) ;
+	                }
+	            }
+	        
+		}System.out.println(sorted);
 		return copyToArray(sorted);
 	}
 	
