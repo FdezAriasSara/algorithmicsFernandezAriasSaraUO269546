@@ -4,15 +4,59 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.chainsaw.Main;
+
 public class SegmentsPlacement {
 	List<Integer> segments;
 	int numberOfSegments;
-	public SegmentsPlacement(List<Integer> segments) {
-		this.segments=new ArrayList<Integer>(segments);
+	
+	public SegmentsPlacement(String filename) {
+		
+		this.segments=readGameFromFile(filename);
+	}
+	public static void main(String args[]) {
+		long total;
+		//###############################################GAME 1#################################################
+		String fileName = Paths.get("").toAbsolutePath().toString() + "/src/main/java/algstudent/s4/game1.txt";
+		SegmentsPlacement segPlace= new SegmentsPlacement(fileName);
+		System.out.println("###############################################GAME 1#################################################");
+		System.out.println("The solution using the ostrich algorithim  (greedy 1) is :");             
+        total=segPlace.greedy1();                				
+        System.out.println("Total cost of greedy1 :"+total);    
+        
+        System.out.println("--------------------------------------------------------------------------------------------------");
+        System.out.println("The solution using the greedy 2 is :");             
+        total=segPlace.greedy2();                				
+        System.out.println("Total cost of greedy2 :"+total);    
+        
+        System.out.println("--------------------------------------------------------------------------------------------------");
+        
+        System.out.println("The solution using the ostrich algorithim  greedy3 is :");             
+        total=segPlace.greedy3();                				
+        System.out.println("Total cost of greedy3 :"+total);    
+        System.out.println("###############################################GAME 2#################################################");
+		//###############################################GAME 2#################################################
+         fileName = Paths.get("").toAbsolutePath().toString() + "/src/main/java/algstudent/s4/game2.txt";
+		 segPlace= new SegmentsPlacement(fileName);
+		System.out.println("The solution using the ostrich algorithim  (greedy 1) is :");             
+        total=segPlace.greedy1();                				
+        System.out.println("Total cost of greedy1 :"+total);    
+        
+        System.out.println("--------------------------------------------------------------------------------------------------");
+        System.out.println("The solution using the greedy 2 is :");             
+        total=segPlace.greedy2();                				
+        System.out.println("Total cost of greedy2 :"+total);    
+        
+        System.out.println("--------------------------------------------------------------------------------------------------");
+        
+        System.out.println("The solution using the ostrich algorithim  greedy3 is :");             
+        total=segPlace.greedy3();                				
+        System.out.println("Total cost of greedy3 :"+total);    
 	}
 	/**
 	 * Applying the ostrich algorithm. The segments are placed in the same order in
@@ -23,8 +67,25 @@ public class SegmentsPlacement {
 	 */
 	public long greedy1() {
 		int[] nonSorted=copyToArray(segments);
+		printSolution(nonSorted);
 		return computeCost(nonSorted);
 	}
+	private void printSolution(int[] elements) {
+		
+			
+			
+		int start=0;
+		int end;
+		long midpoint;
+		for (int i = 0; i < elements.length; i++) {
+			end=start+elements[i];
+			midpoint=(start+end)/2;
+			System.out.println(String.format("(%d,%d):midpoint:%d",start,end,midpoint));
+			start=end;
+		}
+			
+		}
+	
 	/**
 	 *Placing them from longest to shortest length.
 	 * 
@@ -33,7 +94,7 @@ public class SegmentsPlacement {
 	public long greedy2() {
 		
 		int[] sorted=sortAscendantOrder();
-		
+		printSolution(sorted);
 		return computeCost(sorted);
 	}
 	/**
@@ -42,6 +103,7 @@ public class SegmentsPlacement {
 	 */
 	public long greedy3() {
 		int[] sorted=sortDescendantOrder();
+		printSolution(sorted);
 		return computeCost(sorted);
 	}
 /**
@@ -76,9 +138,9 @@ public class SegmentsPlacement {
 	private int[] sortAscendantOrder() {
 		List<Integer> sorted=new ArrayList<Integer>(segments);//Copy constructor
 		
-		for (int i = 0; i < sorted.size(); i++) {
+		for (int i = 0; i < sorted.size()-1; i++) {
 			if(sorted.get(i+1)<sorted.get(i)) {
-				Collections.swap(sorted, i, i+i);
+				Collections.swap(sorted, i+1, i);
 				
 			}
 		}
@@ -87,9 +149,9 @@ public class SegmentsPlacement {
 	private int[] sortDescendantOrder() {
 	List<Integer> sorted=new ArrayList<Integer>(segments);//Copy constructor
 		
-		for (int i = 0; i < sorted.size(); i++) {
+		for (int i = 0; i < sorted.size()-1; i++) {
 			if(sorted.get(i+1)>sorted.get(i)) {
-				Collections.swap(sorted, i, i+i);
+				Collections.swap(sorted, i+1, i);
 				
 			}
 		}
