@@ -135,16 +135,13 @@ public class SegmentsPlacement {
 
 	private int[] sortAscendantOrder() {
 		List<Integer> sorted=new ArrayList<Integer>(segments);//Copy constructor
-		
-		
-		int temp;
+
 		 for (int i= 0 ; i < sorted.size(); i++) { 
 	            for (int j = i + 1; j < sorted.size(); j++) { 
 	                if (sorted.get(i) > sorted.get(j)) 
 	                {
-	                    temp = sorted.get(i);
-	                    sorted.set(i, sorted.get(j));
-	                    sorted.set(j, temp) ;
+	                	Collections.swap(sorted, i, j);
+
 	                }
 	            }
 	        
@@ -154,16 +151,13 @@ public class SegmentsPlacement {
 	}
 	private int[] sortDescendantOrder() {
 	List<Integer> sorted=new ArrayList<Integer>(segments);//Copy constructor
-		
-			
-		int temp;
+	
 		 for (int i= 0 ; i < sorted.size(); i++) { 
 	            for (int j = i + 1; j < sorted.size(); j++) { 
 	                if (sorted.get(i) < sorted.get(j)) 
 	                {
-	                    temp = sorted.get(j);
-	                    sorted.set(j, sorted.get(i));
-	                    sorted.set(i, temp) ;
+	                	Collections.swap(sorted, i, j);
+
 	                }
 	            }
 	        
