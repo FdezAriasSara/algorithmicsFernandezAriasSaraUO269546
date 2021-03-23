@@ -27,7 +27,7 @@ public class SegmentsPlacement {
 			this.segments.add(i,rn.nextInt());
 		}
 	}
-
+//To print solutions uncomment printSolution method in each greedy.
 	public static void main(String args[]) {
 		long total;
 		// ###############################################GAME
@@ -111,7 +111,7 @@ public class SegmentsPlacement {
 	public long greedy2() {
 
 		int[] sorted = sortDescendantOrder();
-	//	printSolution(sorted);
+		//printSolution(sorted);
 		return computeCost(sorted);
 	}
 
@@ -122,7 +122,7 @@ public class SegmentsPlacement {
 	 */
 	public long greedy3() {
 		int[] sorted = sortAscendantOrder();
-	//	printSolution(sorted);
+		//printSolution(sorted);
 		return computeCost(sorted);
 	}
 
@@ -162,11 +162,11 @@ public class SegmentsPlacement {
 	private int[] sortAscendantOrder() {
 		List<Integer> sorted = new ArrayList<Integer>(segments);// Copy constructor
 
-		for (int i = 0; i < sorted.size(); i++) {
-			for (int j = i + 1; j < sorted.size(); j++) {
+		for (int i = 0; i < sorted.size(); i++) {//O(n)
+			for (int j = i + 1; j < sorted.size(); j++) {//O(n)
 				if (sorted.get(i) > sorted.get(j)) {
-					Collections.swap(sorted, i, j);
-
+					Collections.swap(sorted, i, j); //O(1)
+					
 				}
 			}
 
@@ -179,15 +179,14 @@ public class SegmentsPlacement {
 	private int[] sortDescendantOrder() {
 		List<Integer> sorted = new ArrayList<Integer>(segments);// Copy constructor
 		
-		for (int i = 0; i < sorted.size(); i++) {
-		
-			for (int j = i + 1; j < sorted.size(); j++) {
+		for (int i = 0; i < sorted.size(); i++) {	//O(n)	
+			for (int j = i + 1; j < sorted.size(); j++) {//O(n)
 				if (sorted.get(i) < sorted.get(j)) {
-					Collections.swap(sorted, i, j);
-
+					Collections.swap(sorted, i, j); //O(1)
+				
 				}
 			}
-
+			
 		}
 		
 		return copyToArray(sorted);
