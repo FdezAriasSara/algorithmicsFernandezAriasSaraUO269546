@@ -136,19 +136,20 @@ public class LCS {
 			for (int col = 1; col < table[row].length; col++) {
 				
 				if(sec_1[row]==sec_2[col]) {//if the characters of the sequences match, we add one to the previous cell in diagonal and assign it to this.
-					table[row][col]=new CellTable(prev.value+1, row-1, col-1);
+					prev=table[row-1][col-1];
+					table[row][col]=new CellTable(prev.value+1,  prev.iPrev, prev.jPrev);
 					
 				}else {
 					//if no match, the value remains equal to the previous.(in diagonal)
-					if(table[ row-1][col].value>table[row][col-1].value) {
+					if(table[ row-1][col].value>table[row][col-1].value) {//if the upper immediate value is the greatest 
 						//we put the value of the greatest.
-						table[row][col]=new CellTable(table[row-1][col].value, row-1, col-1);
-					}else {
-						table[row][col]=new CellTable(table[row][col-1].value, row-1, col-1);
+						table[row][col]=new CellTable(table[row-1][col].value, row-1, col);
+					}else {//if the immediate left value is the greatest.
+						table[row][col]=new CellTable(table[row][col-1].value,row, col-1);
 					}
 				}
 				
-				prev=table[row][col];
+				//prev=table[row][col];
 				
 			}
 		}
