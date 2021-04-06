@@ -155,12 +155,12 @@ public class LCS {
 			}
 		}
 	}
-
+	//This constructor initializes all values to 0.
 	private void initializeFirstRowAndCol() {
 		for (int row = 0; row < size1; row++) {
 			for (int col = 0; col < size2; col++) {
 				if(row==0 || col==0) {					
-					table[row][col]=new CellTable();//This constructor initializes all values to 0.
+					table[row][col]=new CellTable();
 					
 				}
 				
@@ -186,7 +186,44 @@ public class LCS {
 	 * @param v if True verbose mode activated (To show the path trough the different cells)
 	 */
 	public void findLongestSubseq(boolean v){
-		// TODO: After the table is filled, from table last element traces the MSC found
+		
+		//THE SIZE OF THE LCS WILL BE THE NUMBER IN THE LAST CELL AT THE BOTTOM RIGHT.		
+        int row = size1-1;
+        int col= size2-1;
+        //that's why i start from the sizes.
+        int match_num=0;//number of matches found
+        int lcssize=table[row][col].value;//size of the greatest common subsequence
+        char[] lcs=new char[lcssize];//here i will keep the characters found
+        char[] s1=str1.toCharArray();//to get values from the strings.
+        
+        CellTable prev_cell=table[row][col];
+        row=prev_cell.iPrev;//i want to start comparing the last with the previous to the last.
+    	col=prev_cell.jPrev;
+        while (match_num<lcssize)//while there are matches left to find(also avoids iterating more times than strictly needed)
+        	{      
+        	
+            if (prev_cell.value!=table[row][col].value) {//IF A MATCH IS FOUND    (when a change in value is produced)                                
+                lcs[match_num]=s1[row];
+                //since the number of matches determines the SIZE of the lcs array found I will also use it to add elements to the array as an index                  
+               //in order to move from bottom to top , from right to left.     
+                match_num++;//NOTICE THAT THE LCS WILL BE BACKWARDS SO YOUL HAVE TO REORDER IT
+            }
+              	prev_cell=table[row][col];
+                row=table[row][col].iPrev;
+            	col=table[row][col].jPrev;
+              
+            
+          
+        }
+        //Since the sequence is backwards at this point i make the iteration go from right to left.
+       // for (int i = match_num-1; i>=0; i--) {
+		//	System.out.print(lcs[i]);
+		//}
+       System.out.println();
+			
+			
+		}
+
 	}
 
-}
+

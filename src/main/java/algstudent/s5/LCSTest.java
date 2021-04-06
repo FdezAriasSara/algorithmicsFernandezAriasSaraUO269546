@@ -23,10 +23,10 @@ public class LCSTest {
 		System.out.println("\n/****************/\n");
 		
 		System.out.println("RECURSIVE:");
-		//LCSRec lcsrec = new LCSRec();
+	LCSRec lcsrec = new LCSRec();
 		System.out.println("Finding longest subsequence...");
-		//String seq_rec = lcsrec.findLongestSubseq(str1, str2);
-		//System.out.println(seq_rec);
+		String seq_rec = lcsrec.findLongestSubseq(str1, str2);
+		System.out.println(seq_rec);
 		
 		System.out.println("Program terminated.");
 	} 

@@ -2,7 +2,7 @@ package algstudent.s5;
 
 public class LCSTimes {
 	
-	static String mode = "dynamic"; // "recursive";   
+	static String mode ="dynamic";   
 	static int nTimes = 10;
 	
 	public static void main(String args[]) {
