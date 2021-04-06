@@ -58,8 +58,9 @@ public class LCS {
 	 * Table values initialization
 	 */
 	public void initTable() {
-		for (int j=0; j<size2; j++)
+		
 			for(int i=0; i<size1; i++)
+				for (int j=0; j<size2; j++)
 				table[i][j] = new CellTable();
 	}
 	
@@ -100,7 +101,7 @@ public class LCS {
 		 * @param iPrev
 		 * @param jprev
 		 */
-		public CellTable(int value , int iPrev , int jprev) {
+		public CellTable(int value , int iPrev , int jPrev) {
 			this.value=value;
 			this.iPrev=iPrev;
 			this.jPrev=jPrev;
@@ -131,13 +132,13 @@ public class LCS {
 	   char[] sec_1=str1.toCharArray();
 	    char[] sec_2=str2.toCharArray();
 		initializeFirstRowAndCol();//first row an first column will always be full of zeroes.
-		CellTable prev=table[0][0];
-		for (int row = 1; row < table.length; row++) {
-			for (int col = 1; col < table[row].length; col++) {
+		CellTable prev;//previous cell in diagonal.
+		for (int row = 1; row < size1; row++) {
+			for (int col = 1; col < size2; col++) {
 				
 				if(sec_1[row]==sec_2[col]) {//if the characters of the sequences match, we add one to the previous cell in diagonal and assign it to this.
 					prev=table[row-1][col-1];
-					table[row][col]=new CellTable(prev.value+1,  prev.iPrev, prev.jPrev);
+					table[row][col]=new CellTable(prev.value+1, row-1, col-1);
 					
 				}else {
 					//if no match, the value remains equal to the previous.(in diagonal)
@@ -149,15 +150,15 @@ public class LCS {
 					}
 				}
 				
-				//prev=table[row][col];
+	
 				
 			}
 		}
 	}
 
 	private void initializeFirstRowAndCol() {
-		for (int row = 0; row < table.length; row++) {
-			for (int col = 0; col < table.length; col++) {
+		for (int row = 0; row < size1; row++) {
+			for (int col = 0; col < size2; col++) {
 				if(row==0 || col==0) {					
 					table[row][col]=new CellTable();//This constructor initializes all values to 0.
 					
