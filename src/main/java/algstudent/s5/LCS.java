@@ -122,17 +122,34 @@ public class LCS {
 	
 	/**
 	 * Fill table values for dynamic programming
+	 * //compare the values of the previous row in the same column and the previous column in the same row
+				*you pick the greatest and that will be the new value.
+				*IMPORTANT : you also have to check if the current row char is the same to the column one (f.ex , both are G)
+				//Then you increment the previous value.
 	 */
 	public void fillTable(){
-	
-		initializeFirstRowAndCol();
+	   char[] sec_1=str1.toCharArray();
+	    char[] sec_2=str2.toCharArray();
+		initializeFirstRowAndCol();//first row an first column will always be full of zeroes.
 		CellTable prev=table[0][0];
 		for (int row = 1; row < table.length; row++) {
-			for (int col = 1; col < table.length; col++) {
-				//compare the values of the previous row in the same column and the previous column in the same row
-				//you pick the greatest and that will be the new value.
-				//IMPORTANT : you also have to check if the current row char is the same to the column one (f.ex , both are G)
-				//Then you increment the previous value.
+			for (int col = 1; col < table[row].length; col++) {
+				
+				if(sec_1[row]==sec_2[col]) {//if the characters of the sequences match, we add one to the previous cell in diagonal and assign it to this.
+					table[row][col]=new CellTable(prev.value+1, row-1, col-1);
+					
+				}else {
+					//if no match, the value remains equal to the previous.(in diagonal)
+					if(table[ row-1][col].value>table[row][col-1].value) {
+						//we put the value of the greatest.
+						table[row][col]=new CellTable(table[row-1][col].value, row-1, col-1);
+					}else {
+						table[row][col]=new CellTable(table[row][col-1].value, row-1, col-1);
+					}
+				}
+				
+				prev=table[row][col];
+				
 			}
 		}
 	}
