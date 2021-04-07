@@ -49,12 +49,48 @@ public class PasswordGenerator {
 	
 	//SOLUTION WITH BACKTRACKING
 	private void backtracking(int level) {
-		throw new UnsupportedOperationException("Not implemented yet.");
+	 if(level==numberOfTotalCharacters){
+		 //it means that a solution was found.
+		 found=true;
+	 }else {
+		 Character[] suffle;
+		 if(level<numberOfTotalCharacters - numberOfNonLetterEnds) {
+			 Collections.shuffle(lettersList);//O(n)
+			 suffle=lettersList.toArray(new Character[ letterList.size()]);
+			 
+		 }else {
+			 Collections.shuffle(nonLettersList);//O(n)
+			 suffle=nonLettersList.toArray(new Character[nonLetterList.size()]
+		 }
+		 for (int i = 0; i < suffle.length; i++) {
+			if(!found) {
+				char character=suffle[i];
+				if(valid(level, character)) {
+					//do we meet the constraints?(is the character valid )if so
+				    password[level]=character;
+				    backtracking(level+1);//level +1 because i want to get the next position,
+				}
+			}
+		}
+	 }
 	}
 	
 	//TO KNOW IF A CHAR IS VALID IN A PASSWORD
 	private boolean valid(int level, char letter) {
-		throw new UnsupportedOperationException("Not implemented yet.");
+		//only two vowels are allowed if they are different
+		if(level>0 && isVowel(letter) && letter==password[level-1])
+			return false;//we cannot have two consecutive vowels if they are equal
+		//not three consecutive vowels or consonants
+		if(level>1) {
+			if(isVowel(letter) && isVowel(password[level-1]) && isVowel(password[level-2]))
+			return false;
+			if(isConsonant(letter) && isConsonant(password[level-1]) && isConsonant(password[level-2]))
+				return false;
+		}
+		//only some consonant pairs are allowed.
+		if(level>0 && isConsonant(letter) && isConsonant(password[level-1])) {
+			if(!consonantPairs.contains(String.valueOf))
+		}
 	}
 
 	private boolean isVowel(char letter) {
