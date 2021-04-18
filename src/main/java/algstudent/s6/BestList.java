@@ -47,11 +47,15 @@ public class BestList {
 
 	private static String parseToMinutesAndSeconds(float sec) {
 
-		String toRet = String.format((String.valueOf(sec / 60).replace('.', ':')));
-		return toRet;
+		int totl = (int) Math.floor(sec/60);
+		int secs = Math.round(sec % 60);
+		
+		return totl+":"+String.format("%02d", secs);
 	}
 
-	private boolean isValid(Song song, int level, List<Song> block) {// Is the song small enough to fit into the block?
+	private boolean isValid(Song song, int level, List<Song> block) {
+		
+		// Is the song small enough to fit into the block?
 		if (level == EMPTY) {
 			return song.getDuration() <= blockTime;// if the list is empty , we'll just have to check if the length is
 													// smaller than the total length
@@ -70,50 +74,60 @@ public class BestList {
 
 //This method will have a complexity of O(3^n)
 	private void backtracking(int level) {
+
 		Song song = null;
-		if (level == songsToEvaluate - 1) {// When level is equal to the number of songs, we've reached a leaf.
+		if (level == songsToEvaluate - 1) {// When level is equal to the number of songs, we've reached a leaf.			
 			over = true;
-			keepBestSolution(currentSolutionA, currentSolutionB);
-		} else {
-			// for each song in the file of songs.
-			for (int i = 0; i < songsFromFile.size(); i++) {
-				song = songsFromFile.get(i);
-				if (!over) {// while this solution is not completed.
+			if(validSolution()) {
+		
+				keepBestSolution(currentSolutionA, currentSolutionB);
+			}
+				
+		} else {		
+				song = songsFromFile.get(level);
+				//if (!over) {// while this solution is not completed.
 					// option1 : the song is not included in ANY block
-					if (!isValid(song, level, currentSolutionA) && !isValid(song, level, currentSolutionB)) {
-						counter = getCounter() + 1;
+					//if (!isValid(song, level, currentSolutionA) && !isValid(song, level, currentSolutionB)) {
+			
 						backtracking(level + 1);
 
-					}
+					//}
 
 					// option2: the song is included in block a.
 					if (isValid(song, level, currentSolutionA)) {
-						counter = getCounter() + 1;
+					
 						currentSolutionA.add(song);
 						backtracking(level + 1);
-						// If remove is not used, once the execution goes "out" the element would still
-						// be there
-						// therefore solutions would be mixed.-> the recursive calls will make you work
-						// with the same
-						// list in total different instances-> similar to resource sharing in threads
-
-						songsFromFile.remove(song);
+						currentSolutionA.remove(song);
+					
 					}
 					// option3: the song is included in block b.
 					if (isValid(song, level, currentSolutionB)) {
-						counter = getCounter() + 1;
+				
 						currentSolutionB.add(song);
 						backtracking(level + 1);
-						// If remove is not used, once the execution goes "out" the element would still
-						// be there
-						// therefore solutions would be mixed.
-						songsFromFile.remove(song);
-					}
+						currentSolutionB.remove(song);
+					
 				}
 
 			}
 		}
-	}
+	
+
+	private boolean validSolution() {
+		for (Song song : currentSolutionB) {
+			for (Song songA : currentSolutionA) {
+				
+				if(song.equals(songA)) {
+					
+					return false;
+				}
+			}
+		}
+			return true;
+		
+	
+}
 
 	/**
 	 * We look for the greatest block possible (greatest time used) with the best
@@ -122,21 +136,26 @@ public class BestList {
 	 * @param currentSolutionA2
 	 * @param currentSolutionB2
 	 */
-	private void keepBestSolution(List<Song> currentSolutionA, List<Song> currentSolutionB2) {
+	private void keepBestSolution(List<Song> currentSolutionA, List<Song> currentSolutionB) {
 		// if current calculated block A is a better solution that the previous , block
 		// a will be = to the new.
 		float prevScoreA = getTotalScore(this.blockA);
+		float prevScoreB = getTotalScore(this.blockB);
+		float sumaBlock = prevScoreA + prevScoreB;
 		float currentScoreA = getTotalScore(currentSolutionA);
-		if (prevScoreA <= currentScoreA) {
+		float currentScoreB = getTotalScore(currentSolutionB);
+		float sumaCurrent = currentScoreA + currentScoreB;
+		if (sumaBlock < sumaCurrent) {
+			
 			this.blockA = new ArrayList<Song>(currentSolutionA);
+			this.blockB = new ArrayList<Song>(currentSolutionB);
 		}
 		// if current calculated block B is a better solution that the previous , block
 		// b will be = to the new.
-		float prevScoreB = getTotalScore(this.blockB);
-		float currentScoreB = getTotalScore(currentSolutionB);
-		if (prevScoreB <= currentScoreB) {
-			this.blockB = new ArrayList<Song>(currentSolutionB);
-		}
+		
+
+			
+		
 	}
 
 	private float getTotalScore(List<Song> block) {
@@ -185,7 +204,7 @@ public class BestList {
 	public void printTotals() {
 
 		System.out.println(String.format("Length of the blocks:%s", parseToMinutesAndSeconds(blockTime)));
-		System.out.println(String.format("Total score:%f", getTotalScore(blockA) + getTotalScore(blockB)));
+		System.out.println(String.format("Total score:%.1f", getTotalScore(blockA) + getTotalScore(blockB)));
 		System.out.println(String.format("Total count:%d", getCounter()));
 	}
 
