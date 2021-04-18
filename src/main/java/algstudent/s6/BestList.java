@@ -74,30 +74,31 @@ public class BestList {
 
 //This method will have a complexity of O(3^n)
 	private void backtracking(int level) {
-
+		counter++;
 		Song song = null;
 		if (level == songsToEvaluate - 1) {// When level is equal to the number of songs, we've reached a leaf.			
 			over = true;
+			counter++;
 			if(validSolution()) {
-		
+			
 				keepBestSolution(currentSolutionA, currentSolutionB);
 			}
 				
 		} else {		
 				song = songsFromFile.get(level);
-				//if (!over) {// while this solution is not completed.
+				
 					// option1 : the song is not included in ANY block
-					//if (!isValid(song, level, currentSolutionA) && !isValid(song, level, currentSolutionB)) {
-			
+					
+						
 						backtracking(level + 1);
-
-					//}
+						
 
 					// option2: the song is included in block a.
 					if (isValid(song, level, currentSolutionA)) {
 					
 						currentSolutionA.add(song);
 						backtracking(level + 1);
+						counter++;
 						currentSolutionA.remove(song);
 					
 					}
@@ -106,6 +107,7 @@ public class BestList {
 				
 						currentSolutionB.add(song);
 						backtracking(level + 1);
+						counter++;
 						currentSolutionB.remove(song);
 					
 				}
