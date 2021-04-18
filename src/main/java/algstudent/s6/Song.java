@@ -1,7 +1,7 @@
 package algstudent.s6;
 
 public class Song {
-	public Song(String code, int duration, int score) {
+	public Song(String code, float duration, int score) {
 
 		setCode(code);//identifier of the song.
 		setDuration(duration);
@@ -11,13 +11,13 @@ public class Song {
 
 	private String code;
 	private int score;
-	private int duration;
+	private float duration;
 	
 	public String getCode() {
 		return code;
 	}
 	
-	public int getDuration() {
+	public float getDuration() {
 		return duration;
 	}
 
@@ -28,7 +28,7 @@ public class Song {
 		this.code = code;
 	}
 	
-	private void setDuration(int duration) {
+	private void setDuration(float duration) {
 		this.duration = duration;
 	}
 	private void setScore(int score) {
