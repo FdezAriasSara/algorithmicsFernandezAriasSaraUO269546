@@ -9,6 +9,12 @@ public class Song {
 	}
 
 
+	@Override
+	public String toString() {
+		return code+"\t"+duration+"\t"+ score;
+	}
+
+
 	private String code;
 	private int score;
 	private float duration;
