@@ -12,8 +12,8 @@ public class SongsProblemTest {
 		BufferedReader br;
 		try {
 			br=new BufferedReader(new FileReader(file));
-			String blength=br.readLine();
-			 int numOfSongs=Integer.parseInt(blength);//the first line contains the length the blocks should have.
+			String numberOfSongs=br.readLine();
+			 int numOfSongs=Integer.parseInt(numberOfSongs);//the first line contains the number of songs in the list.
 			
 			BlocksOfSongs blocks=new BlocksOfSongs();
 			
