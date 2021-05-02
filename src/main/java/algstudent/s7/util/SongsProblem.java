@@ -32,8 +32,8 @@ public class SongsProblem {
 		private int numberOfSongs;
 		private UUID parentID;
 
-		private int level;
-
+		private int level;//depth,.
+		//for the root node.
 		public BlocksOfSongs() {
 
 			this.blockA = new ArrayList<Song>();
@@ -41,7 +41,7 @@ public class SongsProblem {
 			this.allSongs = new ArrayList<Song>();
 			level = 0;
 		}
-
+		//for child nodes.
 		public BlocksOfSongs(List<Song> blockA, List<Song> blockB, List<Song> allSongs, int level, UUID parentID) {
 
 			this.blockA = new ArrayList<Song>(blockA);
@@ -53,13 +53,12 @@ public class SongsProblem {
 
 		@Override
 		public void calculateHeuristicValue() {
-			int counter = 0;
+			
 			if (prune()) {// when we prune a node,we want it to be removed / ignored
 				heuristicValue = 0;
 			} else {
-
-			}
-			heuristicValue = counter;
+		}
+			heuristicValue = (int) (getTotalScore(blockA)+getTotalScore(blockB));
 
 		}
 
@@ -85,28 +84,32 @@ public class SongsProblem {
 			//in this problem ,each node will have 3 children.
 			return result;
 		}
-
-		private boolean prune() {
-			boolean valid = false;
-			for (int i = level; i < numberOfSongs; i++) {// we will obtain the solutions with the rest of the songs
-															// starting from the current one.
-				Song song = allSongs.get(i);
-				if (!fitsIntoBlock(song, level, blockA)) {
-					if (fitsIntoBlock(song, level, blockB))
-						valid = true;// ?
-
-				} else {
-
-					if (fitsIntoBlock(song, level, blockA))
-						valid = true;// ?
-
-				}
-				if (!valid)
-					return true;// we want to prune so prune= yes because the song doesn't fit anywhere
-			}
-			return false;
+		/**
+		 * Check if the current solution is valid.
+		 * If not valid, it should be pruned, since no solution starting from an incorrect point can be correct.
+		 * @return
+		 */
+		private boolean prune() {		
+			
+			if(isValidSolution())
+				return false;
+			
+			return true;
 		}
-
+		//how do i control that the solutions are random ? 
+		// how do i control that the solution reached is not always the same ? how do i control that the number of songs is respected?
+		private boolean isValidSolution() {
+			if(getBlockDuration(blockA)>blockLength || getBlockDuration(blockB)>blockLength)
+				return false;
+			else if(blockA.size()==numberOfSongs|| blockB.size()==numberOfSongs){
+				return false;
+			}
+				
+			return true;
+		
+	
+	
+		}
 		@Override
 		public boolean isSolution() {
 
@@ -123,24 +126,26 @@ public class SongsProblem {
 			return 60 * Integer.valueOf(time[0]) + Integer.valueOf(time[1]);// Working with seconds as recommended
 		}
 
-		private boolean fitsIntoBlock(Song song, int level, List<Song> block) {
-
-			// Is the song small enough to fit into the block?
-			if (level == EMPTY) {
-				return song.getDuration() <= blockLength;// if the list is empty , we'll just have to check if the
-															// length is
-															// smaller than the total length
-			} else {// if the list isn't empty , the sum of all previous songs durations + current
-					// song cannot be greater than the block's fixed duration.
-				float total = song.getDuration();
-				for (int i = 0; i < block.size(); i++) {
-					total += block.get(i).getDuration();
+		
+		/**
+		 * 
+		 * @param block,list that contains a series of songs.
+		 * @return the total score of the songs of the block passed as parameter.
+		 */
+			private float getTotalScore(List<Song> block) {
+				float score = 0;
+				for (Song song : block) {
+					score += song.getScore();
 				}
-
-				return total <= blockLength;// if the sum of all durations including the current one is smaller than the
-											// time of the block , the song we are working with is valid.
+				return score;
 			}
-
+		private float getBlockDuration(List<Song> block) {
+			float duration=0;
+			for (Song song :block) {
+				duration+=song.getDuration();
+				
+			}
+			return duration;
 		}
 	}
 }
