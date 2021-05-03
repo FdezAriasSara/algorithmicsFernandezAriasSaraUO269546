@@ -81,6 +81,12 @@ public abstract class Node implements Comparable<Node> {
 		else return -1; //this has more priority (is smaller)
 	}
     
+	@Override
+	public String toString() {
+		return "Node [depth=" + depth + ", parentID=" + parentID + ", ID=" + ID + ", heuristicValue=" + heuristicValue
+				+ "]";
+	}
+
 	public abstract void calculateHeuristicValue();
 	public abstract ArrayList<Node> expand();
 	public abstract boolean isSolution();

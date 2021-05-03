@@ -29,17 +29,19 @@ public abstract class BranchAndBound {
 	 */
 	public void branchAndBound(Node rootNode) { 
 		ds.insert(rootNode); //First node to be explored
-	
+
 		pruneLimit = rootNode.initialValuePruneLimit();
 
 		while (!ds.empty() && ds.estimateBest() < pruneLimit) {
 			Node node = ds.extractBestNode();
+			node.toString();
 			processed++;
 			
 			ArrayList<Node> children = node.expand();		
 			
 			
 			for (Node child : children) {
+				child.toString();
 				generated++;
 				if (child.isSolution()) {
 					int cost = child.getHeuristicValue();

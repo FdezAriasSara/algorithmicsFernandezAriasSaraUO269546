@@ -13,13 +13,12 @@ public class SongsProblem {
 	// Since these classes are internal , they need to be static in order to be
 	// instantiated.
 	public static class BlockGenerator extends BranchAndBound {// to solve a reduced version of branch and bound
-		
+
 		public BlockGenerator(BlocksOfSongs start) {// in this problem it would be a BlocksOfSongs object with two empty
 													// blocks
 			rootNode = start;
 
 		}
-		
 
 	}
 
@@ -31,27 +30,26 @@ public class SongsProblem {
 		private List<Song> allSongs;
 		private int numberOfSongs;
 		private UUID parentID;
-		
-
-		private int level;// depth,.
-		// for the root node.
 
 		public BlocksOfSongs() {
 
 			this.blockA = new ArrayList<Song>();
 			this.blockB = new ArrayList<Song>();
 			this.allSongs = new ArrayList<Song>();
-			level = 0;
+
 		}
 
 		// for child nodes.
-		public BlocksOfSongs(List<Song> blockA, List<Song> blockB, List<Song> allSongs, int level, UUID parentID) {
+		public BlocksOfSongs(List<Song> blockA, List<Song> blockB, List<Song> allSongs, int level, int numberOfSongs,
+				int blength, UUID parentID) {
 
 			this.blockA = new ArrayList<Song>(blockA);
 			this.blockB = new ArrayList<Song>(blockB);
 			this.allSongs = new ArrayList<Song>(allSongs);
-			this.level = level;
+			this.depth = level;
 			this.parentID = parentID;
+			this.numberOfSongs = numberOfSongs;
+			this.blockLength = blength;
 		}
 
 		/**
@@ -65,7 +63,7 @@ public class SongsProblem {
 		public void calculateHeuristicValue() {
 			int counter = 0;
 			if (prune()) {// when we prune a node,we want it to be removed / ignored
-				
+
 				this.heuristicValue = Integer.MAX_VALUE;// if we want this value to be ignored,we put a higher value,
 														// representing that it's cost to the goal is not optimal
 			} else {
@@ -91,19 +89,24 @@ public class SongsProblem {
 			ArrayList<Node> result = new ArrayList<Node>();
 			ArrayList<Song> auxA = new ArrayList<Song>(blockA);
 			ArrayList<Song> auxB = new ArrayList<Song>(blockB);
+			if (getDepth() == numberOfSongs - 1) {
+				return null;
+			}
 
 			// branch and bound involves breadth first search, then, width will be explored
 			// first instead of depth.
-			if (level + 1 <= numberOfSongs) {//if there are no more songs to add the node has no children.(leaf)
-				Song song = allSongs.get(level + 1);
-				auxA.add(song);// node: songs is added to block A
-				result.add(new BlocksOfSongs(auxA, blockB, allSongs, level + 1, this.getID()));
-				auxB.add(song);// node: songs is added to block A
-				result.add(new BlocksOfSongs(blockA, auxB, allSongs, level + 1, this.getID()));
-				// node: songs is added to NONE
-				result.add(new BlocksOfSongs(blockA, blockB, allSongs, level + 1, this.getID()));
-				// in this problem ,each node will have 3 children.
-			}
+			int nextLevel = getDepth() + 1;
+			Song song = allSongs.get(nextLevel-1);
+			System.out.println(song.toString());
+			auxA.add(song);// node: songs is added to block A
+			result.add(new BlocksOfSongs(auxA, blockB, allSongs, nextLevel, numberOfSongs, blockLength, this.getID()));
+			auxB.add(song);// node: songs is added to block A
+			result.add(new BlocksOfSongs(blockA, auxB, allSongs, nextLevel, numberOfSongs, blockLength, this.getID()));
+			// node: songs is added to NONE
+			result.add(
+					new BlocksOfSongs(blockA, blockB, allSongs, nextLevel, numberOfSongs, blockLength, this.getID()));
+			// in this problem ,each node will have 3 children.
+
 			return result;// if no children the returned list is empty.
 		}
 
