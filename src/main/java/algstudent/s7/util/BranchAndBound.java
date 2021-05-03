@@ -34,14 +34,14 @@ public abstract class BranchAndBound {
 
 		while (!ds.empty() && ds.estimateBest() < pruneLimit) {
 			Node node = ds.extractBestNode();
-			node.toString();
+			//node.toString();
 			processed++;
 			
 			ArrayList<Node> children = node.expand();		
 			
 			
 			for (Node child : children) {
-				child.toString();
+				//child.toString();
 				generated++;
 				if (child.isSolution()) {
 					int cost = child.getHeuristicValue();

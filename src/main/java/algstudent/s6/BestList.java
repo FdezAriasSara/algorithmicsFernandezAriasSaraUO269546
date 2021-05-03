@@ -220,6 +220,8 @@ public class BestList {
 		}
 
 	}
+	
+
 
 	public void printTotals() {
 

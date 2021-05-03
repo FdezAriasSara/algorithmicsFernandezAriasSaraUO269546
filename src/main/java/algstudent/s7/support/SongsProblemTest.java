@@ -57,6 +57,7 @@ public class SongsProblemTest {
 			result = generator.getBestNode() != null ? true : false;
 
 		} catch (Exception e) {
+		
 			e.printStackTrace();
 		}
 		return result;

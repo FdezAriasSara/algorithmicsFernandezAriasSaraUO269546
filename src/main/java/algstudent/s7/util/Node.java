@@ -1,7 +1,10 @@
 package algstudent.s7.util;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import algstudent.s6.Song;
 
 /**
  * To represent the different states of a problem in the graph
@@ -81,13 +84,11 @@ public abstract class Node implements Comparable<Node> {
 		else return -1; //this has more priority (is smaller)
 	}
     
-	@Override
-	public String toString() {
-		return "Node [depth=" + depth + ", parentID=" + parentID + ", ID=" + ID + ", heuristicValue=" + heuristicValue
-				+ "]";
-	}
-
+	
 	public abstract void calculateHeuristicValue();
 	public abstract ArrayList<Node> expand();
 	public abstract boolean isSolution();
+
+
+	
 }

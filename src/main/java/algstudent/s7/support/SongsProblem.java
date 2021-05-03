@@ -29,7 +29,7 @@ public class SongsProblem {
 		private int blockLength;
 		private List<Song> allSongs;
 		private int numberOfSongs;
-		private UUID parentID;
+	
 
 		public BlocksOfSongs() {
 
@@ -97,7 +97,7 @@ public class SongsProblem {
 			// first instead of depth.
 			int nextLevel = getDepth() + 1;
 			Song song = allSongs.get(nextLevel-1);
-			System.out.println(song.toString());
+			//System.out.println(song.toString());
 			auxA.add(song);// node: songs is added to block A
 			result.add(new BlocksOfSongs(auxA, blockB, allSongs, nextLevel, numberOfSongs, blockLength, this.getID()));
 			auxB.add(song);// node: songs is added to block A
@@ -134,6 +134,29 @@ public class SongsProblem {
 			return true;
 
 		}
+		@Override
+		public String toString() {
+			String str="";
+			str+="BLOCK A : \n";
+			for (Song song : blockA) {
+				str+=String.format("id:%s seconds:%s score:%d \n", song.getCode(),
+						parseToMinutesAndSeconds(song.getDuration()), song.getScore());
+			}
+			str+="BLOCK B : \n";
+			for (Song song : blockB) {
+				str+=String.format("id:%s seconds:%s score:%d \n", song.getCode(),
+						parseToMinutesAndSeconds(song.getDuration()), song.getScore());
+			}
+			return str;
+		}
+		private static String parseToMinutesAndSeconds(float sec) {
+
+			int totl = (int) Math.floor(sec/60);
+			int secs = Math.round(sec % 60);
+			
+			return totl+":"+String.format("%02d", secs);
+		}
+
 
 		@Override
 		public boolean isSolution() {
@@ -151,18 +174,7 @@ public class SongsProblem {
 			return 60 * Integer.valueOf(time[0]) + Integer.valueOf(time[1]);// Working with seconds as recommended
 		}
 
-		/**
-		 * 
-		 * @param block,list that contains a series of songs.
-		 * @return the total score of the songs of the block passed as parameter.
-		 */
-		private float getTotalScore(List<Song> block) {
-			float score = 0;
-			for (Song song : block) {
-				score += song.getScore();
-			}
-			return score;
-		}
+
 
 		private float getBlockDuration(List<Song> block) {
 			float duration = 0;
