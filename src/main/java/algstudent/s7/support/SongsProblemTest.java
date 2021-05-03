@@ -3,8 +3,8 @@ package algstudent.s7.support;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import algstudent.s7.util.SongsProblem.BlockGenerator;
-import algstudent.s7.util.SongsProblem.BlocksOfSongs;
+import algstudent.s7.support.SongsProblem.BlockGenerator;
+import algstudent.s7.support.SongsProblem.BlocksOfSongs;
 
 public class SongsProblemTest {
 	private boolean executeFromFile(String file) {

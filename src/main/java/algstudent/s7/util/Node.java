@@ -13,6 +13,7 @@ public abstract class Node implements Comparable<Node> {
     protected UUID parentID; //Parent ID for node tracking
     protected UUID ID; //ID for the node
     protected int heuristicValue; //Value of the calculated heuristic
+    
 
     /**
      * Constructor for Node objects

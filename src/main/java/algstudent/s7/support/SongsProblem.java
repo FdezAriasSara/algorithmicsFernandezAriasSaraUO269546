@@ -1,25 +1,25 @@
-package algstudent.s7.util;
+package algstudent.s7.support;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import algstudent.s6.Song;
+import algstudent.s7.util.BranchAndBound;
+import algstudent.s7.util.Node;
 
 public class SongsProblem {
 
 	// Since these classes are internal , they need to be static in order to be
 	// instantiated.
 	public static class BlockGenerator extends BranchAndBound {// to solve a reduced version of branch and bound
-
-		private List<Song> finalblockA;
-		private List<Song> finalblockB;
-
+		
 		public BlockGenerator(BlocksOfSongs start) {// in this problem it would be a BlocksOfSongs object with two empty
 													// blocks
 			rootNode = start;
 
 		}
+		
 
 	}
 
@@ -31,9 +31,11 @@ public class SongsProblem {
 		private List<Song> allSongs;
 		private int numberOfSongs;
 		private UUID parentID;
+		
 
-		private int level;//depth,.
-		//for the root node.
+		private int level;// depth,.
+		// for the root node.
+
 		public BlocksOfSongs() {
 
 			this.blockA = new ArrayList<Song>();
@@ -41,7 +43,8 @@ public class SongsProblem {
 			this.allSongs = new ArrayList<Song>();
 			level = 0;
 		}
-		//for child nodes.
+
+		// for child nodes.
 		public BlocksOfSongs(List<Song> blockA, List<Song> blockB, List<Song> allSongs, int level, UUID parentID) {
 
 			this.blockA = new ArrayList<Song>(blockA);
@@ -51,14 +54,31 @@ public class SongsProblem {
 			this.parentID = parentID;
 		}
 
+		/**
+		 * "Heuristics are criteria, methods or principles for deciding which among
+		 * several alternative courses of action promises to be the most effective in
+		 * order to achieve some goal Heuristic function at a node n is an estimate of
+		 * the optimum cost from the current node n to a Goal and it is denoted by h(n)
+		 * ." Using that logic
+		 */
 		@Override
 		public void calculateHeuristicValue() {
-			
+			int counter = 0;
 			if (prune()) {// when we prune a node,we want it to be removed / ignored
-				heuristicValue = 0;
+				
+				this.heuristicValue = Integer.MAX_VALUE;// if we want this value to be ignored,we put a higher value,
+														// representing that it's cost to the goal is not optimal
 			} else {
-		}
-			heuristicValue = (int) (getTotalScore(blockA)+getTotalScore(blockB));
+				ArrayList<Node> children = expand();
+				for (Node node : children) {
+					if (!((BlocksOfSongs) node).prune()) {// we add 1 for each child node that separates the current one
+															// from the solution.
+						counter++;
+					}
+				} // in case the node has no children and it's not pruned, heuristic value =0.
+					// Then , it's the solution.
+			}
+			this.heuristicValue = counter;
 
 		}
 
@@ -74,47 +94,49 @@ public class SongsProblem {
 
 			// branch and bound involves breadth first search, then, width will be explored
 			// first instead of depth.
-			Song song = allSongs.get(level);
-			auxA.add(song);// node: songs is added to block A
-			result.add(new BlocksOfSongs(auxA, blockB, allSongs, level + 1, this.getID()));
-			auxB.add(song);// node: songs is added to block A
-			result.add(new BlocksOfSongs(blockA, auxB, allSongs, level + 1, this.getID()));
-			// node: songs is added to NONE
-			result.add(new BlocksOfSongs(blockA, blockB, allSongs, level + 1, this.getID()));
-			//in this problem ,each node will have 3 children.
-			return result;
+			if (level + 1 <= numberOfSongs) {//if there are no more songs to add the node has no children.(leaf)
+				Song song = allSongs.get(level + 1);
+				auxA.add(song);// node: songs is added to block A
+				result.add(new BlocksOfSongs(auxA, blockB, allSongs, level + 1, this.getID()));
+				auxB.add(song);// node: songs is added to block A
+				result.add(new BlocksOfSongs(blockA, auxB, allSongs, level + 1, this.getID()));
+				// node: songs is added to NONE
+				result.add(new BlocksOfSongs(blockA, blockB, allSongs, level + 1, this.getID()));
+				// in this problem ,each node will have 3 children.
+			}
+			return result;// if no children the returned list is empty.
 		}
+
 		/**
-		 * Check if the current solution is valid.
-		 * If not valid, it should be pruned, since no solution starting from an incorrect point can be correct.
+		 * Check if the current solution is valid. If not valid, it should be pruned,
+		 * since no solution starting from an incorrect point can be correct.
+		 * 
 		 * @return
 		 */
-		private boolean prune() {		
-			
-			if(isValidSolution())
+		private boolean prune() {
+
+			if (isValidSolution())
 				return false;
-			
+
 			return true;
 		}
-		//how do i control that the solutions are random ? 
-		// how do i control that the solution reached is not always the same ? how do i control that the number of songs is respected?
+
 		private boolean isValidSolution() {
-			if(getBlockDuration(blockA)>blockLength || getBlockDuration(blockB)>blockLength)
+			if (getBlockDuration(blockA) > blockLength || getBlockDuration(blockB) > blockLength)
 				return false;
-			else if(blockA.size()==numberOfSongs|| blockB.size()==numberOfSongs){
+			else if (blockA.size() > numberOfSongs || blockB.size() > numberOfSongs) {
 				return false;
 			}
-				
+
 			return true;
-		
-	
-	
+
 		}
+
 		@Override
 		public boolean isSolution() {
 
-			return (heuristicValue != 0) ? true : false;// heuristic value=total score of the blocks . If 0, it should
-														// be pruned.
+			return (heuristicValue == 0) ? true : false;// heuristic value=total score of the blocks .If hv=0 it's a
+														// solution.
 		}
 
 		public void addSongFromFile(String[] data) {
@@ -126,24 +148,24 @@ public class SongsProblem {
 			return 60 * Integer.valueOf(time[0]) + Integer.valueOf(time[1]);// Working with seconds as recommended
 		}
 
-		
 		/**
 		 * 
 		 * @param block,list that contains a series of songs.
 		 * @return the total score of the songs of the block passed as parameter.
 		 */
-			private float getTotalScore(List<Song> block) {
-				float score = 0;
-				for (Song song : block) {
-					score += song.getScore();
-				}
-				return score;
+		private float getTotalScore(List<Song> block) {
+			float score = 0;
+			for (Song song : block) {
+				score += song.getScore();
 			}
+			return score;
+		}
+
 		private float getBlockDuration(List<Song> block) {
-			float duration=0;
-			for (Song song :block) {
-				duration+=song.getDuration();
-				
+			float duration = 0;
+			for (Song song : block) {
+				duration += song.getDuration();
+
 			}
 			return duration;
 		}
