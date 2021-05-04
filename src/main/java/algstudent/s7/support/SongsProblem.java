@@ -29,13 +29,14 @@ public class SongsProblem {
 		private int blockLength;
 		private List<Song> allSongs;
 		private int numberOfSongs;
-	
 
-		public BlocksOfSongs() {
+		public BlocksOfSongs(int numOfSongs, String blength) {
 
 			this.blockA = new ArrayList<Song>();
 			this.blockB = new ArrayList<Song>();
 			this.allSongs = new ArrayList<Song>();
+			this.numberOfSongs = numOfSongs;
+			this.blockLength = parseToSeconds(blength);
 
 		}
 
@@ -50,6 +51,7 @@ public class SongsProblem {
 			this.parentID = parentID;
 			this.numberOfSongs = numberOfSongs;
 			this.blockLength = blength;
+
 		}
 
 		/**
@@ -67,17 +69,16 @@ public class SongsProblem {
 				this.heuristicValue = Integer.MAX_VALUE;// if we want this value to be ignored,we put a higher value,
 														// representing that it's cost to the goal is not optimal
 			} else {
-				ArrayList<Node> children = expand();
-				for (Node node : children) {
-					if (!((BlocksOfSongs) node).prune()) {// we add 1 for each child node that separates the current one
-															// from the solution.
-						counter++;
-					}
-				} // in case the node has no children and it's not pruned, heuristic value =0.
+				// we add 1 for each child node that separates the current one from the solution.
+				for (int i =getDepth(); i <numberOfSongs; i++) {//there will be a level per song.
+					counter++;
+				}
+				
+					// in case the node has no children and it's not pruned, heuristic value =0.
 					// Then , it's the solution.
-			}
+				}
+			
 			this.heuristicValue = counter;
-
 		}
 
 		/**
@@ -89,25 +90,27 @@ public class SongsProblem {
 			ArrayList<Node> result = new ArrayList<Node>();
 			ArrayList<Song> auxA = new ArrayList<Song>(blockA);
 			ArrayList<Song> auxB = new ArrayList<Song>(blockB);
-			if (getDepth() == numberOfSongs - 1) {
-				return null;
+			if (getDepth() < numberOfSongs - 1) {
+
+				// branch and bound involves breadth first search, then, width will be explored
+				// first instead of depth.
+				int nextLevel = getDepth() + 1;// + 1;
+				Song song = allSongs.get(nextLevel);
+				// System.out.println(song.toString());
+				auxA.add(song);// node: songs is added to block A
+				result.add(
+						new BlocksOfSongs(auxA, blockB, allSongs, nextLevel, numberOfSongs, blockLength, this.getID()));
+				auxB.add(song);// node: songs is added to block A
+				result.add(
+						new BlocksOfSongs(blockA, auxB, allSongs, nextLevel, numberOfSongs, blockLength, this.getID()));
+				// node: songs is added to NONE
+				result.add(new BlocksOfSongs(blockA, blockB, allSongs, nextLevel, numberOfSongs, blockLength,
+						this.getID()));
+				// in this problem ,each node will have 3 children.
+
+				// if no children the returned list is empty.
 			}
-
-			// branch and bound involves breadth first search, then, width will be explored
-			// first instead of depth.
-			int nextLevel = getDepth() + 1;
-			Song song = allSongs.get(nextLevel-1);
-			//System.out.println(song.toString());
-			auxA.add(song);// node: songs is added to block A
-			result.add(new BlocksOfSongs(auxA, blockB, allSongs, nextLevel, numberOfSongs, blockLength, this.getID()));
-			auxB.add(song);// node: songs is added to block A
-			result.add(new BlocksOfSongs(blockA, auxB, allSongs, nextLevel, numberOfSongs, blockLength, this.getID()));
-			// node: songs is added to NONE
-			result.add(
-					new BlocksOfSongs(blockA, blockB, allSongs, nextLevel, numberOfSongs, blockLength, this.getID()));
-			// in this problem ,each node will have 3 children.
-
-			return result;// if no children the returned list is empty.
+			return result;
 		}
 
 		/**
@@ -134,33 +137,34 @@ public class SongsProblem {
 			return true;
 
 		}
+
 		@Override
 		public String toString() {
-			String str="";
-			str+="BLOCK A : \n";
+			String str = "";
+			str += "BLOCK A : \n";
 			for (Song song : blockA) {
-				str+=String.format("id:%s seconds:%s score:%d \n", song.getCode(),
+				str += String.format("id:%s seconds:%s score:%d \n", song.getCode(),
 						parseToMinutesAndSeconds(song.getDuration()), song.getScore());
 			}
-			str+="BLOCK B : \n";
+			str += "BLOCK B : \n";
 			for (Song song : blockB) {
-				str+=String.format("id:%s seconds:%s score:%d \n", song.getCode(),
+				str += String.format("id:%s seconds:%s score:%d \n", song.getCode(),
 						parseToMinutesAndSeconds(song.getDuration()), song.getScore());
 			}
 			return str;
 		}
-		private static String parseToMinutesAndSeconds(float sec) {
 
-			int totl = (int) Math.floor(sec/60);
+		private String parseToMinutesAndSeconds(float sec) {
+
+			int totl = (int) Math.floor(sec / 60);
 			int secs = Math.round(sec % 60);
-			
-			return totl+":"+String.format("%02d", secs);
+
+			return totl + ":" + String.format("%02d", secs);
 		}
 
-
 		@Override
-		public boolean isSolution() {
-
+		public boolean isSolution() {			
+			calculateHeuristicValue();
 			return (heuristicValue == 0) ? true : false;// heuristic value=total score of the blocks .If hv=0 it's a
 														// solution.
 		}
@@ -169,12 +173,10 @@ public class SongsProblem {
 			allSongs.add(new Song(data[0], parseToSeconds(data[1]), Integer.valueOf(data[2])));
 		}
 
-		private float parseToSeconds(String string) {
+		private int parseToSeconds(String string) {
 			String[] time = string.split(":");// since time is given in min:sec format.
 			return 60 * Integer.valueOf(time[0]) + Integer.valueOf(time[1]);// Working with seconds as recommended
 		}
-
-
 
 		private float getBlockDuration(List<Song> block) {
 			float duration = 0;
@@ -183,6 +185,18 @@ public class SongsProblem {
 
 			}
 			return duration;
+		}
+
+		protected List<Song> getBlockA() {
+			return blockA;
+		}
+
+		protected List<Song> getBlockB() {
+			return blockB;
+		}
+
+		protected List<Song> getAllSongs() {
+			return allSongs;
 		}
 	}
 }

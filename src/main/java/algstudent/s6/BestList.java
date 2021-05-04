@@ -29,6 +29,20 @@ public class BestList {
 		BestList bl = new BestList(time, filepath);
 		bl.backtracking(0);
 		bl.printSolution();
+		filepath = Paths.get("").toAbsolutePath().toString()
+				+ "/src/main/java/algstudent/s7/Lista02.txt";
+
+		time = parseToSeconds(args[0]);
+		 bl = new BestList(time, filepath);
+		bl.backtracking(0);
+		bl.printSolution();
+		filepath = Paths.get("").toAbsolutePath().toString()
+				+ "/src/main/java/algstudent/s7/Lista03.txt";
+
+		time = parseToSeconds(args[0]);
+		 bl = new BestList(time, filepath);
+		bl.backtracking(0);
+		bl.printSolution();
 
 	}
 
@@ -201,9 +215,11 @@ public class BestList {
 			while (reader.ready()) {
 
 				line = reader.readLine().split("\t");
+			
 				songsFromFile.add(new Song(line[0], parseToSeconds(line[1]), Integer.valueOf(line[2])));
 			}
-
+			reader.close();
+		
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
